@@ -50,7 +50,7 @@ class ViewController: UIViewController {
     lazy var myGroupName: UILabel = {
         let label = UILabel()
         label.frame = CGRect(x: 150, y: 120, width: 100, height: 100)
-        label.text = "5"
+        label.text = "поток №5"
         label.isHidden = true
         return label
     }()
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 85, green: 107, blue: 47, alpha: 1)
+        view.backgroundColor = .white
         
         view.addSubview(nameLabel)
         view.addSubview(secondNameLabel)
