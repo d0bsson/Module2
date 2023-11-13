@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Labeles:
     lazy var nameLabel: UILabel = {
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
        let label = UILabel()
         label.frame = CGRect(x: 150, y: 70, width: 100, height: 100)
         label.text = "Дэвид"
-        label.isHidden = true
+        label.isHidden = false
         return label
     }()
     
@@ -43,22 +43,22 @@ class ViewController: UIViewController {
         let label = UILabel()
         label.frame = CGRect(x: 165, y: 95, width: 100, height: 100)
         label.text = "Бердников"
-        label.isHidden = true
+        label.isHidden = false
         return label
     }()
     
     lazy var myGroupName: UILabel = {
         let label = UILabel()
         label.frame = CGRect(x: 150, y: 120, width: 100, height: 100)
-        label.text = "5"
-        label.isHidden = true
+        label.text = "поток №5"
+        label.isHidden = false
         return label
     }()
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 85, green: 107, blue: 47, alpha: 1)
+        view.backgroundColor = .white
         
         view.addSubview(nameLabel)
         view.addSubview(secondNameLabel)
@@ -70,12 +70,19 @@ class ViewController: UIViewController {
         view.addSubview(nameButton)
         view.addSubview(secondNameButton)
         view.addSubview(groupNameButton)
+        view.addSubview(OkNameButton)
+        view.addSubview(OkSecondNameButton)
+        view.addSubview(OkGroupName)
+        
+        view.addSubview(nameTF)
+        view.addSubview(secondNameTF)
+        view.addSubview(groupTF)
     }
     
     //MARK: - Buttons & Actions
     lazy var nameButton: UIButton = {
         let button = UIButton(primaryAction: nameButtonAction)
-        button.frame = CGRect(x: 40, y: 350, width: 150, height: 40)
+        button.frame = CGRect(x: 40, y: 200, width: 150, height: 40)
         button.setTitle("Показать имя", for: .normal)
         button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
@@ -85,7 +92,7 @@ class ViewController: UIViewController {
     
     lazy var secondNameButton: UIButton = {
        let button = UIButton(primaryAction: secondNameAction)
-        button.frame = CGRect(x: 205, y: 350, width: 150, height: 40)
+        button.frame = CGRect(x: 205, y: 200, width: 150, height: 40)
         button.setTitle("Показать фамилию", for: .normal)
         button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
@@ -95,22 +102,64 @@ class ViewController: UIViewController {
     
     lazy var groupNameButton: UIButton = {
         let button = UIButton(primaryAction: groupNameAction)
-        button.frame = CGRect(x: 75, y: 400, width: 250, height: 40)
+        button.frame = CGRect(x: 75, y: 250, width: 250, height: 40)
         button.setTitle("Показать группу", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         return button
     }()
     
-    lazy var nameButtonAction =  UIAction { _ in
-        self.myName.isHidden.toggle()
-        
-        if self.myName.isHidden {
-            self.nameButton.setTitle("Показать имя", for: .normal)
-        } else {
-            self.nameButton.setTitle("Скрыть имя", for: .normal)
+    lazy var OkNameButton: UIButton = {
+        let button = UIButton(primaryAction: OkNameButtonAction)
+        button.frame = CGRect(x: 300, y: 300, width: 60, height: 40)
+        button.setTitle("OK", for: .normal)
+        button.backgroundColor = .lightText
+        button.layer.cornerRadius = 3
+        return button
+    }()
+    
+    lazy var OkSecondNameButton: UIButton = {
+        let button = UIButton(primaryAction: OkSecondNameButtonAction)
+        button.frame = CGRect(x: 300, y: 350, width: 60, height: 40)
+        button.setTitle("OK", for: .normal)
+        button.backgroundColor = .lightText
+        button.layer.cornerRadius = 3
+        return button
+    }()
+    
+    lazy var OkGroupName: UIButton = {
+        let button = UIButton(primaryAction: OkGroupNameAction)
+        button.frame = CGRect(x: 300, y: 400, width: 60, height: 40)
+        button.setTitle("OK", for: .normal)
+        button.backgroundColor = .lightText
+        button.layer.cornerRadius = 3
+        return button
+    }()
+    
+    lazy var OkGroupNameAction = UIAction { _ in
+        if let text = self.groupTF.text {
+            self.myGroupName.text = text
         }
+    }
+    
+    lazy var OkNameButtonAction = UIAction { _ in
+        if let text = self.nameTF.text {
+            self.myName.text = text
+        }
+    }
+    
+    lazy var OkSecondNameButtonAction = UIAction { _ in
+        if let text = self.secondNameTF.text {
+            self.mySecondName.text = text
+        }
+    }
+    
+    lazy var nameButtonAction =  UIAction { _ in
+        print(1111)
+        let vc = SecondViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        print(111)
     }
     
     lazy var secondNameAction = UIAction { _ in
@@ -123,7 +172,7 @@ class ViewController: UIViewController {
         }
     }
     
-    lazy var groupNameAction = UIAction {_ in
+    lazy var groupNameAction = UIAction { _ in
         self.myGroupName.isHidden.toggle()
         
         if self.myGroupName.isHidden {
@@ -131,6 +180,38 @@ class ViewController: UIViewController {
         } else {
             self.groupNameButton.setTitle("Скрыть номер группы", for: .normal)
         }
+    }
+    
+    
+    
+    //MARK: - Text Fields:
+    lazy var nameTF: UITextField = {
+        let textField = UITextField()
+        textField.frame = CGRect(x: 40, y: 300, width: 250, height: 40)
+        textField.placeholder = "Введите имя"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    lazy var secondNameTF: UITextField = {
+        let textField = UITextField()
+        textField.frame = CGRect(x: 40, y: 350, width: 250, height: 40)
+        textField.placeholder = "Введите фамилию"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    lazy var groupTF: UITextField = {
+        let textField = UITextField()
+        textField.frame = CGRect(x: 40, y: 400, width: 250, height: 40)
+        textField.placeholder = "Введите номер группы"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(111)
+        return true
     }
 }
 
