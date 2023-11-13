@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Labeles:
     lazy var nameLabel: UILabel = {
@@ -156,13 +156,10 @@ class ViewController: UIViewController {
     }
     
     lazy var nameButtonAction =  UIAction { _ in
-        self.myName.isHidden.toggle()
-        
-        if self.myName.isHidden {
-            self.nameButton.setTitle("Показать имя", for: .normal)
-        } else {
-            self.nameButton.setTitle("Скрыть имя", for: .normal)
-        }
+        print(1111)
+        let vc = SecondViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        print(111)
     }
     
     lazy var secondNameAction = UIAction { _ in
@@ -211,5 +208,10 @@ class ViewController: UIViewController {
         textField.borderStyle = .roundedRect
         return textField
     }()
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(111)
+        return true
+    }
 }
 
